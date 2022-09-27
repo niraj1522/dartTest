@@ -1,0 +1,46 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Text Widget in flutter'),
+        ),
+        body: Center(
+          child: Text.rich(
+            TextSpan(
+                text: 'First ',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 20.0,
+                ),
+                children: <InlineSpan>[
+                  TextSpan(
+                      text: 'Second ',
+                      style: TextStyle(color: Colors.blue, fontSize: 25.0)),
+                  TextSpan(
+                      text: 'Third',
+                      style: TextStyle(
+                        color: Colors.purple,
+                        fontSize: 40.0,
+                      )),
+                ]),
+          ),
+        ),
+      ),
+    );
+  }
+}
