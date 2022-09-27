@@ -1,0 +1,66 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Text Widget in flutter'),
+        ),
+        body: Center(
+          child: Container(
+            // height: 300.0,
+            // width: 300.0,
+            // alignment: Alignment.center,
+            padding: EdgeInsets.all(10.0),
+            // transform: Matrix4.rotationZ(5.0),
+            // margin: EdgeInsets.all(50.0),
+            decoration: BoxDecoration(
+              // borderRadius: BorderRadius.only(
+              //   topLeft: Radius.circular(20.0),
+              //   bottomRight: Radius.circular(20.0),
+              // ),
+              // shape: BoxShape.circle,
+              color: Colors.red,
+              border: Border.all(
+                color: Colors.blue,
+                width: 10.0,
+              ),
+              // boxShadow: [
+              //   BoxShadow(
+              //     blurRadius: 5.0,
+              //     color: Colors.grey.shade800,
+              //     spreadRadius: 2.0,
+              //     offset: Offset(5.0, 5.0),
+              //   ),
+              // ],
+              gradient: LinearGradient(
+                  begin: Alignment.centerRight,
+                  end: Alignment.centerLeft,
+                  colors: [
+                    Colors.red,
+                    Colors.yellow,
+                  ]),
+            ),
+            child: Text(
+              'Hello world',
+              style: TextStyle(color: Colors.blueGrey[900], fontSize: 30.0),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
