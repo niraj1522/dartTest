@@ -1,0 +1,127 @@
+import 'package:flutter/material.dart';
+
+import 'tab1.dart';
+
+void main() {
+  runApp(NavigatorApp());
+}
+
+class NavigatorApp extends StatelessWidget {
+  const NavigatorApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MyApp(),
+    );
+  }
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home Page'),
+      ),
+      body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+// to make page normal when clicking back button on another screen
+//                 Navigator.pop(context);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Tab1(),
+                  ),
+                );
+              },
+              child: Text('Next-Page'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+// Page-2
+
+import 'package:flutter/material.dart';
+
+import 'tab2.dart';
+
+class Tab1 extends StatefulWidget {
+  const Tab1({Key? key}) : super(key: key);
+
+  @override
+  State<Tab1> createState() => _Tab1State();
+}
+
+class _Tab1State extends State<Tab1> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // drawer: NavigationDrawer(),
+      appBar: AppBar(
+        leading: BackButton(),
+        title: const Text('Second Page'),
+      ),
+      body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Previous'),
+            ),
+            SizedBox(
+              width: 30.0,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Tab2(),
+                  ),
+                );
+              },
+              child: const Text('Next'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+//page-3
+
+import 'package:flutter/material.dart';
+
+class Tab2 extends StatefulWidget {
+  const Tab2({Key? key}) : super(key: key);
+
+  @override
+  State<Tab2> createState() => _Tab2State();
+}
+
+class _Tab2State extends State<Tab2> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Third Page'),
+      ),
+    );
+  }
+}
