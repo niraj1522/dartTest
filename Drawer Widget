@@ -1,0 +1,200 @@
+import 'package:flutter/material.dart';
+import 'package:i_am_parash/tab1.dart';
+
+import 'tab3.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        drawer: NavigationDrawer(),
+        appBar: AppBar(
+          title: Text('Drawer Widget Practice'),
+        ),
+      ),
+    );
+  }
+}
+
+class NavigationDrawer extends StatelessWidget {
+  const NavigationDrawer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            buildHeader(context),
+            buildMenuItems(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildHeader(BuildContext context) => Material(
+        color: Colors.blue.shade700,
+        child: Container(
+          padding: EdgeInsets.only(
+              top: 24 + MediaQuery.of(context).padding.top, bottom: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                borderRadius: BorderRadius.circular(70.0),
+                // customBorder: CircleBorder(),
+                splashColor: Colors.white,
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const Tab3(),
+                    ),
+                  );
+                },
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: 50,
+                  backgroundImage: AssetImage('images/d_airee.png'),
+                ),
+              ),
+              SizedBox(
+                height: 12.0,
+              ),
+              Text(
+                'Dipendra Singh Airee',
+                style: TextStyle(fontSize: 18.0, color: Colors.white),
+              ),
+              Text(
+                'dipendra420@gmail.com',
+                style: TextStyle(fontSize: 12.0, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      );
+  Widget buildMenuItems(BuildContext context) => Container(
+        padding: EdgeInsets.all(24.0),
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.home_outlined),
+              title: Text('Home'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const Tab1()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.favorite_outline),
+              title: Text('Favourite'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.workspaces_outlined),
+              title: Text('Workflow'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.update_outlined),
+              title: Text('Updates'),
+              onTap: () {},
+            ),
+            const Divider(
+              color: Colors.black54,
+            ),
+            ListTile(
+              leading: const Icon(Icons.account_tree_outlined),
+              title: Text('Plugins'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.notifications_outlined),
+              title: Text('Notifications'),
+              onTap: () {},
+            ),
+          ],
+        ),
+      );
+}
+
+
+
+// Another Page Code for Navigation Screens 
+
+
+
+
+// TAB 1 code for Navigation Screen
+
+import 'package:flutter/material.dart';
+
+class Tab1 extends StatefulWidget {
+  const Tab1({Key? key}) : super(key: key);
+
+  @override
+  State<Tab1> createState() => _Tab1State();
+}
+
+class _Tab1State extends State<Tab1> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // drawer: NavigationDrawer(),
+      appBar: AppBar(
+        leading: BackButton(),
+        title: const Text('Home page'),
+      ),
+      body: Center(
+        child: Container(
+          child: Text('Home Page'),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+
+//TAB 3 program
+import 'package:flutter/material.dart';
+
+class Tab3 extends StatefulWidget {
+  const Tab3({Key? key}) : super(key: key);
+
+  @override
+  State<Tab3> createState() => _Tab3State();
+}
+
+class _Tab3State extends State<Tab3> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile Page'),
+      ),
+      backgroundColor: Colors.red,
+      body: Center(
+        child: Container(
+          child: Text('Profile Page'),
+        ),
+      ),
+    );
+  }
+}
