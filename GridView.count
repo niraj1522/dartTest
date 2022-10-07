@@ -1,0 +1,216 @@
+import 'package:flutter/material.dart';
+
+import 'car.dart';
+import 'computer.dart';
+import 'danger.dart';
+import 'draw.dart';
+import 'home.dart';
+import 'person.dart';
+import 'phone.dart';
+import 'read.dart';
+import 'setting.dart';
+import 'star.dart';
+
+void main() {
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: MyApp(),
+  ));
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.more_vert_sharp),
+          )
+        ],
+        leading: Icon(Icons.search),
+        title: Text('Grid View'),
+      ),
+      body: GridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: 5.0,
+        mainAxisSpacing: 5.0,
+        padding: EdgeInsets.all(5.0),
+        children: [
+          InkWell(
+            onTap: () {
+              // Navigator.pop(context);
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const HomeScreen()));
+            },
+            child: Container(
+              color: Colors.red,
+              child: Center(
+                child: Icon(
+                  Icons.home_outlined,
+                  size: 60.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const PhoneScreen(),
+                ),
+              );
+            },
+            child: Container(
+              color: Colors.green,
+              child: Center(
+                child: Icon(
+                  Icons.phone_outlined,
+                  size: 60.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SettingScreen()));
+            },
+            child: Container(
+              color: Colors.blue,
+              child: Center(
+                child: Icon(
+                  Icons.settings_outlined,
+                  size: 60.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const PersonScreen()));
+            },
+            child: Container(
+              color: Colors.purple,
+              child: Center(
+                child: Icon(
+                  Icons.person_outline,
+                  size: 60.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ComputerScreen()));
+            },
+            child: Container(
+              color: Colors.black,
+              child: Center(
+                child: Icon(
+                  Icons.computer_outlined,
+                  size: 60.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const StarScreen()));
+            },
+            child: Container(
+              color: Colors.orange,
+              child: Center(
+                child: Icon(
+                  Icons.star_outline,
+                  size: 60.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const CarScreen()));
+            },
+            child: Container(
+              color: Colors.brown,
+              child: Center(
+                child: Icon(
+                  Icons.car_rental_outlined,
+                  size: 60.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const ReadScreen()));
+            },
+            child: Container(
+              color: Colors.grey,
+              child: Center(
+                child: Icon(
+                  Icons.read_more,
+                  size: 60.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const DrawScreen()));
+            },
+            child: Container(
+              color: Colors.pink,
+              child: Center(
+                child: Icon(
+                  Icons.draw_outlined,
+                  size: 60.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const DangerScreen()));
+            },
+            child: Container(
+              color: Colors.blue.shade900,
+              child: Center(
+                child: Icon(
+                  Icons.dangerous_outlined,
+                  size: 60.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
