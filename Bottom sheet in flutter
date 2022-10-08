@@ -1,0 +1,85 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(
+    home: MyApp(),
+  ));
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+          appBar: AppBar(
+            title: const Text('List View'),
+          ),
+          body: Center(
+            child: ElevatedButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  // isScrollControlled: true,
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(50.0))),
+                  context: context,
+                  builder: (context) => buildSheet(),
+                );
+              },
+              child: Text('Simple Sheet'),
+            ),
+          )),
+    );
+  }
+
+  Widget buildSheet() => Container(
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.white,
+                  spreadRadius: 2.0,
+                  // offset: Offset(20.0, 10.0),
+                  blurRadius: 4.0)
+            ],
+            color: Colors.red,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
+        padding: EdgeInsets.all(10.0),
+        // color: Colors.red,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatar(
+                radius: 50.0,
+                backgroundImage: AssetImage('images/d_airee.png'),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                'Dipendra Singh Airee',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                "He made his List A debut for Nepal against Kenya in the 2015–17 ICC World Cricket League Championship on 11 March 2017. Prior to his List A debut, he was named in Nepal's squad for the 2016 Under-19 Cricket World Cup. In 2017 ACC Under-19 Asia Cup, he was captain of the Nepal national under-19 cricket team. He scored 88 runs and took 4/39 against India in the group A match and was adjudged man of the match. He scored 88 runs to push the total score to 185/8. India were 91/1 after which he led the attack forcing a collapse to 166 all out. India U-19 team were the defending champions and the victory was considered an upset by cricket critics.",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
+                  wordSpacing: 0.5,
+                  letterSpacing: 0.5,
+                ),
+                textAlign: TextAlign.justify,
+              ),
+            ],
+          ),
+        ),
+      );
+}
