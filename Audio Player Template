@@ -1,0 +1,140 @@
+import 'dart:core';
+// this is the audio player package
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  //creating audio player
+  final audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+  String audio1 =
+      'https://firebasestorage.googleapis.com/v0/b/test-c35c3.appspot.com/o/files%2Faudio%20files%2Fstart.mp3?alt=media&token=c5b4d59b-571d-45a6-9823-2ebadc43e278';
+
+  @override
+  
+  // This function is written to clear out when setstate rebuilds widget
+  
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  //function to format duration in seconds and minutes
+
+  String formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return [
+      if (duration.inHours > 0) hours,
+      minutes,
+      seconds,
+    ].join(':');
+  }
+
+  @override
+  
+  // This is the initial state of app 
+  void initState() {
+  
+    // listen to states : playing, paused, stopped
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == PlayerState.playing;
+      });
+    });
+    
+    //listen to audio duration
+    audioPlayer.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+    
+    // listen to audio position
+
+    audioPlayer.onPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+    });
+    
+    // when audio finished
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+        // Audio play slider
+          Slider(
+            min: 0,
+            max: duration.inSeconds.toDouble(),
+            value: position.inSeconds.toDouble(),
+            onChanged: (value) async {
+            // To cause slider change its position 
+              final position = Duration(seconds: value.toInt());
+              // To freely move slider wherever user wants
+              await audioPlayer.seek(position);
+              // to play audio in loop mode after it gets finished
+              await audioPlayer.setReleaseMode(ReleaseMode.loop);
+              // await audioPlayer.resume();
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+              // These are the duration for audio like start and end duration of audio
+                Text(formatTime(position)),
+                Text(formatTime(duration - position))
+              ],
+            ),
+          ),
+          
+          // this is play and pause Button
+          CircleAvatar(
+            backgroundColor: Colors.red,
+            radius: 35,
+            child: IconButton(
+              icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+              iconSize: 50,
+              onPressed: () async {
+                if (isPlaying) {
+                  await audioPlayer.pause();
+                  setState(() {
+                    isPlaying = false;
+                  });
+                } else {
+                  print('clicked');
+                  await audioPlayer.play(UrlSource(audio1));
+                  setState(() {
+                    isPlaying = true;
+                  });
+                }
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
