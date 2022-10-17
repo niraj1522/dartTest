@@ -1,0 +1,229 @@
+// Main screen code
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import 'second_screen.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
+  runApp(MaterialApp(home: MyApp()));
+}
+
+class MyApp extends StatefulWidget {
+  // const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late InterstitialAd _interstitialAd;
+  bool _isLoaded = false;
+  final BannerAd myBanner = BannerAd(
+      adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener());
+
+  void _initAd() {
+    InterstitialAd.load(
+      adUnitId: 'ca-app-pub-3940256099942544/8691691433',
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: onAdLoaded,
+        onAdFailedToLoad: ((error) =>
+            print("Add not loaded due to the error of $error")),
+      ),
+    );
+  }
+
+  void onAdLoaded(InterstitialAd ad) {
+    print('add successfully loaded');
+    _interstitialAd = ad;
+    _isLoaded = true;
+    _interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+      onAdDismissedFullScreenContent: (ad) {
+        _isLoaded = false;
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => SecondScreen()));
+
+        Timer(Duration(seconds: 20), () => _initAd());
+        // _interstitialAd.dispose();
+      },
+      onAdFailedToShowFullScreenContent: (ad, error) {
+        _interstitialAd.dispose();
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    myBanner.load();
+    _initAd();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Admob Ads Test'),
+        ),
+        body: Stack(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  print('hello wolrd');
+                  if (_isLoaded) {
+                    _interstitialAd.show();
+                  } else {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SecondScreen()));
+                  }
+                },
+                child: Text('Show Ad')),
+            Center(
+              child: Text('This is my admob ads test'),
+            ),
+            Positioned(
+              height: 50.0,
+              width: 320.0,
+              top: 450.0,
+              left: 20.0,
+              child: AdWidget(
+                ad: myBanner,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+// Second Screen Code :-
+
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+class SecondScreen extends StatefulWidget {
+  // SecondScreen(this.name, this.address);
+  // final Widget name;
+  // final Widget address;
+
+  @override
+  State<SecondScreen> createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
+  // _SecondScreenState(this.name, this.address);
+  // final Widget name;
+  // final Widget address;
+  int initialReward = 0;
+  RewardedAd? _rewardedAd;
+  bool _isLoader = false;
+
+  // loading rewarded ad
+
+  void loadRewardedAd() {
+    RewardedAd.load(
+        adUnitId: 'ca-app-pub-3940256099942544/5224354917',
+        request: AdRequest(),
+        rewardedAdLoadCallback: RewardedAdLoadCallback(
+            onAdLoaded: (RewardedAd ad) {
+              this._rewardedAd = ad;
+              this._isLoader = true;
+              print('Rewarded ad loaded successfully');
+            },
+            onAdFailedToLoad: (LoadAdError error) =>
+                print('Ad load failed due to $error')));
+
+    _rewardedAd?.fullScreenContentCallback = FullScreenContentCallback(
+      onAdClicked: (RewardedAd ad) {
+        loadRewardedAd();
+      },
+      // when ad is shown full screen
+      onAdShowedFullScreenContent: (RewardedAd ad) {
+        loadRewardedAd();
+      },
+      // when ad is not able to show
+      onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
+        print('failed to show ad due to $error error');
+        loadRewardedAd();
+      },
+      // when user dismiss the ad
+      onAdDismissedFullScreenContent: (RewardedAd ad) {
+        loadRewardedAd();
+      },
+    );
+  }
+
+  void showRewardedAd() {
+    _rewardedAd?.show(
+        onUserEarnedReward: (AdWithoutView view, RewardItem item) {
+      _isLoader = false;
+      Timer(Duration(seconds: 20), () => loadRewardedAd());
+
+      setState(() {
+        initialReward++;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadRewardedAd();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Second Screen'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Text(initialReward.toString()),
+            ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_isLoader) {
+                    showRewardedAd();
+                  } else {
+                    final snackBar = SnackBar(
+                        content:
+                            Text('Reward will be available after 20 seconds.'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: Text("show Ad"),
+              ),
+            ),
+            // SizedBox(height: 300.0,),
+            // address,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+// Pubspec.yaml file
+
+google_mobile_ads: ^2.1.0 // add this dependancy in pubspec.yaml file
